@@ -15,5 +15,7 @@ public:
 
     void chekArea(vector<vector<double>>& x, int ind ,int n);
 
-
+    vector<double> getFirst();
+    vector<double> getSecond();
+    void setArea(vector<double>a, vector<double>b);
 };

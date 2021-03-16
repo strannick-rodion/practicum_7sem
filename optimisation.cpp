@@ -5,14 +5,16 @@
 #include <algorithm>
 #include "Area.h"
 #include "function.h"
+#include <random>
+mt19937 generator;
 using namespace std;
 
-    int optimisation::getIter() 
+    int Optimisation::getIter() 
     { 
         return iter; 
       }
 
-    vector<double> optimisation::getRez()
+    vector<double> Optimisation::getRez()
     {
         return vecX.back();
     }
@@ -37,7 +39,10 @@ using namespace std;
     }
     vector<double> Newton::calcP(Function& f, int ind)
     {
-  
+        if (!invMatr.empty())
+        {
+            invMatr.clear();
+  }
         int n = f.getK();
         vector<double> temp(n, 0);
         for (int j = 0; j < n; ++j)
@@ -47,6 +52,10 @@ using namespace std;
         }
 
         inverse(getHessian(), invMatr, n);
+        if (!p.empty())
+        {
+            p.clear();
+        }
         
         matByRow(invMatr, getGradient(), p, n);
 
@@ -70,7 +79,7 @@ using namespace std;
         return abs(x);
     }
 
-    bool Newton:: Stop( Function& f, int ind, int stopCrit)
+    bool Newton:: Stop( Function& f,  int stopCrit)
     {
         int size = f.getK();
 
@@ -81,31 +90,31 @@ using namespace std;
         
           switch (stopCrit)
           {
-          case 0:
-              if ((getNorma(getGradient(), size) < eps )&& (ind >= 100))
+          case 1:
+              if ((getNorma(getGradient(), size) < eps )|| (iter >= 50))
                   return false;
               break;
-          case 1:
-              if (ind > 0)
+          case 2:
+              if (iter > 0)
               {
                   //cout << "x[" << 0 << "]= " << vecX[iter - 1][0] << endl;
                  // cout << "x[" << 1 << "]= " << vecX[iter][0] << endl;
                   for (int i = 0; i < size; ++i)
                   {
-                      temp.push_back(vecX[ind][i] - vecX[ind - 1][i]);
+                      temp.push_back(vecX[iter][i] - vecX[iter - 1][i]);
                       cout << "temp[" << i << "]=" << temp[i] << endl;
                   }
                   //cout << endl;
-                  if ((getNorma(temp, size) < eps)&& (ind >= 100))
+                  if ((getNorma(temp, size) < eps)|| (iter >= 50))
                   {
                       return false;
                   }
               }
               break;
           default:
-              if (ind > 0)
+              if (iter > 0)
               {
-                  if ((getNorma((f.getf(vecX[ind]) - f.getf(vecX[ind - 1])) / f.getf(vecX[ind])) < eps)&& (ind >= 100))
+                  if ((getNorma((f.getf(vecX[iter]) - f.getf(vecX[iter - 1])) / f.getf(vecX[iter])) < eps)|| (iter >= 50))
                   {
                     return false;
                   }
@@ -119,16 +128,15 @@ using namespace std;
         return true;
     }
 
-    void Newton:: calcOptim(vector<double>& x, Function& f, Area areaOpt, int stopCrit)
+    void Newton:: calcOptim(vector<double>& x, Function& f, Area areaOpt, int stopCrit ,double eps)
     {
         vecX.push_back(x);
-        double eps = 0.1;
         int n = f.getK();
         vector <double> tempP(n, 0), tempX(n,0);
-        double alpha = 1;
+        double alpha = 2;
         calcGradient(f,x );
         calcHessian(f, x);
-        for (iter = 0; Stop( f, iter,stopCrit); ++iter, alpha /= 2)
+        for (iter = 0; Stop( f,stopCrit); ++iter, alpha /= 2)
         {
             tempP = calcP(f,iter);
             for (int j = 0; j < n; ++j)
@@ -140,7 +148,7 @@ using namespace std;
                // cout << "prev[" << j << "]= " << vecX[iter][j] << endl;
             }
             vecX.push_back(tempX);
-           // areaOpt.chekArea(vecX, iter,n);
+            areaOpt.chekArea(vecX, iter,n);
             
             cout << "x[" << 0 << "]= " << vecX[iter][0] << " ";
             cout << "x[" << 1 << "]= " << vecX[iter][1] << endl;
@@ -277,4 +285,64 @@ using namespace std;
         for (int i = n - 1; i >= 0; --i)
             gauseback(b, temp, n, i);
 
+    }
+
+
+    void RandomSearch::calcOptim(vector<double>& x, Function& f, Area areaOpt, int stopCrit, double eps)
+    {
+        vecX.push_back(x);
+        int n = f.getK();
+        vector<uniform_real_distribution<>> dist;
+
+        for (int i = 0; i < n; ++i)
+        {
+            uniform_real_distribution<> dis(areaOpt.getFirst()[i], areaOpt.getSecond()[i]);
+            dist.push_back(dis);
+        }
+       
+        
+        vector<double> tempX(n, 0);
+        for (int i = 0; i < n; ++i)
+        {
+            tempX[i] = dist[i](generator);
+        }
+        
+        int numX;
+
+        for (iter = 0; Stop(f, stopCrit); ++iter)
+        {
+            if (f.getf(tempX) > f.getf(vecX.back()))
+            {
+                vecX.push_back(tempX);
+                for (int i = 0; i < n; ++i)
+                {
+                    tempX[i] = dist[i](generator);
+                }
+                lastOptim = iter;
+                
+            }
+            else
+            {
+                vecX.push_back(tempX);
+                for (int i = 0; i < n; ++i)
+                {
+                    tempX[i] = dist[i](generator);
+                }
+            }
+            
+        }
+        
+    }
+    bool RandomSearch::Stop(Function& f,  int stopCrit) 
+    {
+        
+
+        
+       if (( (iter-lastOptim)> 10) || (iter >= 50))
+                return false;
+        
+ 
+      
+
+        return true;
     }

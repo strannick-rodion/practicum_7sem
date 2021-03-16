@@ -5,7 +5,8 @@ using namespace std;
 
 Area::Area(vector<double>& a, vector<double>& b) : first(a), second(b) {};
 
-
+vector<double> Area::getFirst() { return first; }
+vector<double>Area::getSecond() { return second; }
 bool Area::inArea(const vector<double>& x)
 {
     bool res = true;
@@ -42,4 +43,9 @@ void Area::chekArea(vector<vector<double>>& x, int ind, int n)
 
         }
     }
+}
+void Area::setArea(vector<double>a, vector<double>b)
+{
+    first = a;
+    second = b;
 }

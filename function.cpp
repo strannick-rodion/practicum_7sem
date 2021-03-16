@@ -3,6 +3,15 @@
 
 
 using namespace std;
+int function1::getK()
+{
+    return  2;
+}
+
+double function1::getf(vector<double> x)
+{
+    return (x[1] +8) * (x[1] +8) + (x[0] -10) * (x[0] -10) +20;
+}
 
 int function2::getK()
 {

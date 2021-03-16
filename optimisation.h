@@ -7,7 +7,7 @@ using namespace std;
 
 
 
-class optimisation
+class Optimisation
 {
 protected:
     double eps = 0.01;
@@ -16,13 +16,22 @@ protected:
 public:
     int getIter();
     vector<double> getRez();
-    virtual void calcOptim(vector<double>& x, Function& f, Area areaOpt, int stopCrit) = 0 {};
-    virtual bool Stop(Function& f, int ind, int topCrit) = 0 {};
+    virtual void calcOptim(vector<double>& x, Function& f, Area areaOpt, int stopCrit, double eps) = 0 {};
+    virtual bool Stop(Function& f,  int topCrit) = 0 {};
 };
 
 
+class RandomSearch:public Optimisation
+{
+    int lastOptim=0;
+public:
 
-class Newton:public optimisation
+    void calcOptim(vector<double>& x, Function& f, Area areaOpt, int stopCrit, double eps)override;
+    bool Stop(Function& f,  int topCrit)override;
+};
+
+
+class Newton:public Optimisation
 {
     vector<double> p, temp;
     vector<vector<double>> invMatr;
@@ -40,9 +49,9 @@ public:
     void calcHessian(Function& f, vector<double>&x);
     vector<vector<double>> getHessian();
     vector<double> getGradient();
-    bool Stop( Function& f, int ind, int topCrit);
+    bool Stop( Function& f,  int topCrit);
 
-    void calcOptim(vector<double>& x, Function& f, Area areaOpt, int stopCrit)override;
+    void calcOptim(vector<double>& x, Function& f, Area areaOpt, int stopCrit, double eps)override;
 
     vector<double> getRez();
 };

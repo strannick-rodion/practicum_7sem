@@ -9,6 +9,13 @@ public:
     virtual double getf(vector<double> x) = 0;
 };
 
+class function1 : public Function
+{
+public:
+    int getK()override;
+    double getf(vector<double> x) override;
+};
+
 class function2 : public Function
 {
 public:
