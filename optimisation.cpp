@@ -14,15 +14,22 @@ using namespace std;
         return iter; 
       }
 
+    int Optimisation::getSize()
+    {
+        return vecX.size();
+    }
+
     vector<double> Optimisation::getRez()
     {
         return vecX.back();
     }
 
+    double Optimisation::getVecX(int i, int j)
+    {
+        return vecX[i][j];
+    }
 
-
-    //double Newton::getEps() { return eps; }
-    //int Newton::getIter() { return iter; }
+  
 
     void  Newton:: matByRow(vector<vector<double>>& mat, const vector<double>& vec, vector<double>& p, int n)
     {
@@ -79,7 +86,7 @@ using namespace std;
         return abs(x);
     }
 
-    bool Newton:: Stop( Function& f,  int stopCrit)
+    bool Newton:: Stop( Function& f,  int stopCrit, int maxIter)
     {
         int size = f.getK();
 
@@ -91,21 +98,20 @@ using namespace std;
           switch (stopCrit)
           {
           case 1:
-              if ((getNorma(getGradient(), size) < eps )|| (iter >= 50))
+              if ((getNorma(getGradient(), size) < eps )|| (iter >= maxIter))
                   return false;
               break;
           case 2:
               if (iter > 0)
               {
-                  //cout << "x[" << 0 << "]= " << vecX[iter - 1][0] << endl;
-                 // cout << "x[" << 1 << "]= " << vecX[iter][0] << endl;
+                  
                   for (int i = 0; i < size; ++i)
                   {
                       temp.push_back(vecX[iter][i] - vecX[iter - 1][i]);
-                      cout << "temp[" << i << "]=" << temp[i] << endl;
+                      
                   }
-                  //cout << endl;
-                  if ((getNorma(temp, size) < eps)|| (iter >= 50))
+                  
+                  if ((getNorma(temp, size) < eps)|| (iter >= maxIter))
                   {
                       return false;
                   }
@@ -114,7 +120,7 @@ using namespace std;
           default:
               if (iter > 0)
               {
-                  if ((getNorma((f.getf(vecX[iter]) - f.getf(vecX[iter - 1])) / f.getf(vecX[iter])) < eps)|| (iter >= 50))
+                  if ((getNorma((f.getf(vecX[iter]) - f.getf(vecX[iter - 1])) / f.getf(vecX[iter])) < eps)|| (iter >= maxIter))
                   {
                     return false;
                   }
@@ -128,15 +134,16 @@ using namespace std;
         return true;
     }
 
-    void Newton:: calcOptim(vector<double>& x, Function& f, Area areaOpt, int stopCrit ,double eps)
+    void Newton:: calcOptim(vector<double>& x, Function& f, Area areaOpt, int stopCrit ,double eps,int maxIter)
     {
         vecX.push_back(x);
         int n = f.getK();
         vector <double> tempP(n, 0), tempX(n,0);
         double alpha = 2;
         calcGradient(f,x );
+
         calcHessian(f, x);
-        for (iter = 0; Stop( f,stopCrit); ++iter, alpha /= 2)
+        for (iter = 0; Stop( f,stopCrit, maxIter); ++iter, alpha /= 2)
         {
             tempP = calcP(f,iter);
             for (int j = 0; j < n; ++j)
@@ -144,20 +151,16 @@ using namespace std;
                
                 tempX[j] = vecX[iter][j] + tempP[j] * alpha;
                 
-                cout << "TempX[" << j << "]= " << tempX[j] << endl;
-               // cout << "prev[" << j << "]= " << vecX[iter][j] << endl;
+             
             }
             vecX.push_back(tempX);
             areaOpt.chekArea(vecX, iter,n);
-            
-            cout << "x[" << 0 << "]= " << vecX[iter][0] << " ";
-            cout << "x[" << 1 << "]= " << vecX[iter][1] << endl;
-           
-            cout << endl;
+
             calcGradient(f, vecX[iter+1]);
+
             calcHessian(f, vecX[iter+1]);
-           // d->calcGradient(f, vecX[iter+1]);
-           // d->calcHessian(f, vecX[iter+1]);
+            
+          
 
         }
         invMatr.clear();
@@ -209,7 +212,7 @@ using namespace std;
             }
             hessian.push_back(vectemp);
         }
-        cout << "hessian:" << endl << hessian[0][0] << " " << hessian[0][1] << endl << hessian[1][0] << " " << hessian[1][1] << endl << "__" << endl;
+       
 
     }
    
@@ -229,12 +232,8 @@ using namespace std;
         double temp = a[k][k];
         for (i = 0; (i < n) && (a[k][k] != 0); ++i)
         {
-
-            //  cout << "akk=" << a[k][k] << endl;
             b[k][i] = b[k][i] / temp;
-            // cout << "bki=" << b[k][i]<< endl;
             a[k][i] = a[k][i] / temp;
-            // cout << "aki=" << a[k][i] << endl;
         }
         for (i = k + 1; i < n; i++) {
             double cur = a[i][k];
@@ -244,9 +243,7 @@ using namespace std;
                 a[i][j] = a[i][j] - cur * a[k][j];
             }
         }
-        //  cout << "I`m in forward" << endl;
-         // cout << "forwardInv:" << endl << b[0][0] << " " << b[0][1] << endl << b[1][0] << " " << b[1][1] << endl << "__" << endl;
-         // cout << "forwardA:" << endl << a[0][0] << " " << a[0][1] << endl << a[1][0] << " " << a[1][1] << endl << "__" << endl;
+        
     }
 
 
@@ -268,18 +265,17 @@ using namespace std;
                 a[i][j] = a[i][j] - cur * a[k][j];
             }
         }
-        // cout << "backInv:" << endl << b[0][0] << " " << b[0][1] << endl << b[1][0] << " " << b[1][1] << endl << "__" << endl;
-        // cout << "backA:" << endl << a[0][0] << " " << a[0][1] << endl << a[1][0] << " " << a[1][1] << endl << "__" << endl;
+        
     }
 
     void inverse(const vector<vector<double>>& a, vector<vector<double>>& b, int n)
     {
         vector<vector<double>> temp(a);
-        // cout << "Ain:" << endl << a[0][0] << " " << a[0][1] << endl << a[1][0] << " " << a[1][1] << endl << "__" << endl;
+       
         for (int i = 0; i < n; ++i)
         {
             gauseforward(b, temp, n, i);
-            //cout << "After:" << endl << b[0][0] << " " << b[0][1] << endl << b[1][0] << " " << b[1][1] << endl << "__" << endl;
+           
         }
 
         for (int i = n - 1; i >= 0; --i)
@@ -288,46 +284,47 @@ using namespace std;
     }
 
 
-    void RandomSearch::calcOptim(vector<double>& x, Function& f, Area areaOpt, int stopCrit, double eps)
+    void RandomSearch::calcOptim(vector<double>& x, Function& f, Area areaOpt, int stopCrit, double epsN, int maxIter)
     {
+
+        eps = epsN;
+        
         vecX.push_back(x);
         int n = f.getK();
-        vector<uniform_real_distribution<>> dist;
-
-        for (int i = 0; i < n; ++i)
-        {
-            uniform_real_distribution<> dis(areaOpt.getFirst()[i], areaOpt.getSecond()[i]);
-            dist.push_back(dis);
-        }
-       
-        
+        uniform_real_distribution<> dist(0.,1.);
+        double alpha;
         vector<double> tempX(n, 0);
         for (int i = 0; i < n; ++i)
         {
-            tempX[i] = dist[i](generator);
+            alpha = dist(generator);
+            tempX[i] = areaOpt.getFirst()[i] + alpha * (areaOpt.getSecond()[i] - areaOpt.getFirst()[i]);
         }
+       
         
-        int numX;
+        
 
-        for (iter = 0; Stop(f, stopCrit); ++iter)
+        for (iter = 0; Stop(f, stopCrit,maxIter); ++iter)
         {
             if (f.getf(tempX) > f.getf(vecX.back()))
             {
+               
                 
                 for (int i = 0; i < n; ++i)
                 {
-                    tempX[i] = dist[i](generator);
+                    alpha = dist(generator);
+                    tempX[i] = areaOpt.getFirst()[i] + alpha * (areaOpt.getSecond()[i] - areaOpt.getFirst()[i]);
                 }
                 
                 
             }
             else
             {
+                cout << "in:" << tempX[0] << " " << tempX[1] << endl;
                 vecX.push_back(tempX);
-                //vecX.push_back(tempX);
                 for (int i = 0; i < n; ++i)
                 {
-                    tempX[i] = dist[i](generator);
+                    alpha = dist(generator);
+                    tempX[i] = areaOpt.getFirst()[i] + alpha * (areaOpt.getSecond()[i] - areaOpt.getFirst()[i]);
                 }
                 lastOptim = iter;
             }
@@ -335,12 +332,12 @@ using namespace std;
         }
         
     }
-    bool RandomSearch::Stop(Function& f,  int stopCrit) 
+    bool RandomSearch::Stop(Function& f,  int stopCrit, int maxIter)
     {
         
 
         
-       if (( (iter-lastOptim)> 10) || (iter >= 50))
+       if (( (iter-lastOptim)> 3) || (iter >= maxIter))
                 return false;
         
  

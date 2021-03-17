@@ -18,9 +18,9 @@ int main()
     Function* f=nullptr;
     int funcNum;
     Optimisation* rez;
-    int areaNum;
+    int areaNum, maxIter;
     Area areaOpt(a, b);
-    double eps = 0.01;
+    double eps;
 
     cout << "Choose function:" << endl;
     cout << "1. f(x, y) = (y +8)^2 + (x -10)^2 +20"<<endl;
@@ -46,7 +46,7 @@ int main()
             a = { -50, -50 };
             b = { 50, 50 };
             areaOpt.setArea(a, b);
-            x = { 20, 15 };
+            x = { 40, 40 };
             break;
 
         default:
@@ -78,7 +78,7 @@ int main()
             a = { -50, -50 };
             b = { 50, 50 };
             areaOpt.setArea(a, b);
-            x = { 20, 15 };
+            x = { 41, 40 };
             break;
 
         default:
@@ -134,30 +134,37 @@ int main()
     cout << "Enter method number:" << endl;
     cin >> methodNum;
     int stopCrit;
+    
     switch (methodNum)
     {
     case 1:
     {
+       
         cout << "Choose stopping criterion" << endl;
         cout << "1. Gradient" << endl;
         cout << "2. Function arguments" << endl;
         cout << "3. Function value" << endl;
         cout << "Enter stopping criterion number:" << endl;
         cin >> stopCrit;
-       
+        cout << "Enter eps in (0,1):" << endl;
+        cin >> eps;
+        cout << "Enter maximal number of iteration:" << endl;
+        cin >> maxIter;
         rez = new Newton();
-        rez->calcOptim(x, *f, areaOpt, stopCrit, eps);
+        rez->calcOptim(x, *f, areaOpt, stopCrit, eps,maxIter);
         break;
     }
     default:
     {
         cout << "Choose stopping criterion" << endl;
         cout << "1. Last change>10" << endl;
-    
+        cout << "Enter eps in (0,1):" << endl;
+        cin >> eps;
         cin >> stopCrit;
-
+        cout << "Enter maximal number of iteration:" << endl;
+        cin >> maxIter;
         rez = new RandomSearch();
-        rez->calcOptim(x, *f, areaOpt, stopCrit, eps);
+        rez->calcOptim(x, *f, areaOpt, stopCrit, eps, maxIter);
         break;
     }
     }
@@ -173,7 +180,18 @@ int main()
     }
     cout << endl;
 
-    cout << "f= " <<f->getf(rez->getRez()) << std::endl;
+    cout << "f= " <<f->getf(rez->getRez()) << endl;
+    cout << rez->getSize() << endl;
+   int n = rez->getSize();
+    for (int i = 0; i <n; ++i)
+    {
+        for (int j = 0; j < f->getK(); ++j)
+        {
+            cout << i<< ":" << rez->getVecX(i,j) << " " ;
+        }
+        cout << endl;
+    }
+    
  
     
 
