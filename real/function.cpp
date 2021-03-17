@@ -25,10 +25,10 @@ double function2::getf(vector<double> x)
 
 int function3::getK()
 {
-    return  3;
+    return  2;
 }
 
 double function3::getf(vector<double> x)
 {
-    return x[1] * x[1] + x[2] * x[2] + x[0] * x[0] + 5;
+    return (x[0]+2*x[1]-7)*(x[0]+2*x[1]-7)+(2*x[0]+x[1]-5)*(2*x[0]+x[1]-5);
 }

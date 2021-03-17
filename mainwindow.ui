@@ -17,292 +17,320 @@
    <widget class="QCustomPlot" name="plot" native="true">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>30</y>
-      <width>531</width>
-      <height>391</height>
+      <x>30</x>
+      <y>110</y>
+      <width>551</width>
+      <height>351</height>
      </rect>
     </property>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QLabel" name="rezZn">
     <property name="geometry">
      <rect>
-      <x>560</x>
-      <y>30</y>
-      <width>251</width>
-      <height>421</height>
+      <x>610</x>
+      <y>260</y>
+      <width>201</width>
+      <height>131</height>
      </rect>
     </property>
-    <layout class="QVBoxLayout" name="verticalLayout_9">
-     <item>
-      <layout class="QVBoxLayout" name="verticalLayout">
+    <property name="text">
+     <string>Result</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="ready">
+    <property name="geometry">
+     <rect>
+      <x>240</x>
+      <y>60</y>
+      <width>281</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Info</string>
+    </property>
+   </widget>
+   <widget class="QWidget" name="gridLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>10</y>
+      <width>801</width>
+      <height>48</height>
+     </rect>
+    </property>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="0">
+      <layout class="QVBoxLayout" name="verticalLayout_4">
        <item>
-        <widget class="QLabel" name="label">
+        <widget class="QLabel" name="label_17">
          <property name="text">
           <string>Function:</string>
          </property>
         </widget>
        </item>
-       <item>
-        <widget class="QComboBox" name="functionChoice">
+      </layout>
+     </item>
+     <item row="0" column="1">
+      <widget class="QTabWidget" name="tabWidget_2">
+       <property name="currentIndex">
+        <number>2</number>
+       </property>
+       <widget class="QWidget" name="tab_3">
+        <attribute name="title">
+         <string>f(x,y)=(x^2+y-11)^2+(y^2+x-7)^2</string>
+        </attribute>
+       </widget>
+       <widget class="QWidget" name="tab_6">
+        <attribute name="title">
+         <string>f(x,y)=(y-3)^2+(x + 5)^2-3</string>
+        </attribute>
+       </widget>
+       <widget class="QWidget" name="tab_7">
+        <attribute name="title">
+         <string>f(x,y)=(x+2y-7)^2+(2x+y-5)^2</string>
+        </attribute>
+       </widget>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>600</x>
+      <y>70</y>
+      <width>221</width>
+      <height>181</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>Method:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QTabWidget" name="tabWidget">
+       <property name="minimumSize">
+        <size>
+         <width>135</width>
+         <height>80</height>
+        </size>
+       </property>
+       <property name="currentIndex">
+        <number>1</number>
+       </property>
+       <widget class="QWidget" name="Tab">
+        <attribute name="title">
+         <string>Newton</string>
+        </attribute>
+        <widget class="QLabel" name="label_4">
+         <property name="geometry">
+          <rect>
+           <x>11</x>
+           <y>11</y>
+           <width>106</width>
+           <height>16</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Stopping criterion:</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_8">
+         <property name="geometry">
+          <rect>
+           <x>12</x>
+           <y>96</y>
+           <width>76</width>
+           <height>16</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>max Iteration</string>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="indNewton">
+         <property name="geometry">
+          <rect>
+           <x>95</x>
+           <y>96</y>
+           <width>81</width>
+           <height>22</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>100</string>
+         </property>
+        </widget>
+        <widget class="QComboBox" name="stopChoice">
+         <property name="geometry">
+          <rect>
+           <x>11</x>
+           <y>35</y>
+           <width>121</width>
+           <height>22</height>
+          </rect>
+         </property>
          <item>
           <property name="text">
-           <string>f(x,y)=(x^2+y-11)^2+(y^2+x-7)^2</string>
+           <string>Gradient</string>
           </property>
          </item>
          <item>
           <property name="text">
-           <string>f(x,y)=(y-3)^2+(x + 5)^2-3</string>
+           <string>Function arguments</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Function value</string>
           </property>
          </item>
         </widget>
-       </item>
-       <item>
-        <layout class="QVBoxLayout" name="verticalLayout_2">
-         <item>
-          <widget class="QLabel" name="label_2">
-           <property name="text">
-            <string>Area:</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QComboBox" name="areaChoice">
-           <item>
+        <widget class="QLineEdit" name="epsZn">
+         <property name="geometry">
+          <rect>
+           <x>39</x>
+           <y>65</y>
+           <width>137</width>
+           <height>22</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>0.1</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_5">
+         <property name="geometry">
+          <rect>
+           <x>12</x>
+           <y>65</y>
+           <width>20</width>
+           <height>16</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>eps</string>
+         </property>
+        </widget>
+       </widget>
+       <widget class="QWidget" name="tab_4">
+        <attribute name="title">
+         <string>Random Search</string>
+        </attribute>
+        <widget class="QWidget" name="">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>20</y>
+           <width>181</width>
+           <height>80</height>
+          </rect>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <item>
+           <widget class="QLabel" name="label_9">
             <property name="text">
-             <string>(-5,5)x(-5,5)</string>
+             <string>Stopping criterion:</string>
             </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>(-10,15)x(-20,20)</string>
-            </property>
-           </item>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QVBoxLayout" name="verticalLayout_7">
-         <item>
-          <layout class="QVBoxLayout" name="verticalLayout_6">
-           <item>
-            <layout class="QVBoxLayout" name="verticalLayout_4">
-             <item>
-              <layout class="QHBoxLayout" name="horizontalLayout_3">
-               <item>
-                <layout class="QHBoxLayout" name="horizontalLayout">
-                 <item>
-                  <widget class="QLabel" name="label_6">
-                   <property name="text">
-                    <string>x</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLineEdit" name="xZn">
-                   <property name="text">
-                    <string>10</string>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </item>
-               <item>
-                <widget class="QLabel" name="label_7">
-                 <property name="text">
-                  <string>y</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QLineEdit" name="yZn">
-                 <property name="text">
-                  <string>10</string>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </item>
-             <item>
-              <widget class="QLabel" name="label_3">
-               <property name="text">
-                <string>Method:</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QTabWidget" name="tabWidget">
-               <property name="minimumSize">
-                <size>
-                 <width>135</width>
-                 <height>80</height>
-                </size>
-               </property>
-               <property name="currentIndex">
-                <number>1</number>
-               </property>
-               <widget class="QWidget" name="Tab">
-                <attribute name="title">
-                 <string>Newton</string>
-                </attribute>
-                <layout class="QVBoxLayout" name="verticalLayout_5">
-                 <item>
-                  <widget class="QLabel" name="label_4">
-                   <property name="text">
-                    <string>Stopping criterion:</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QComboBox" name="stopChoice">
-                   <item>
-                    <property name="text">
-                     <string>Gradient</string>
-                    </property>
-                   </item>
-                   <item>
-                    <property name="text">
-                     <string>Function arguments</string>
-                    </property>
-                   </item>
-                   <item>
-                    <property name="text">
-                     <string>Function value</string>
-                    </property>
-                   </item>
-                  </widget>
-                 </item>
-                 <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_2">
-                   <item>
-                    <widget class="QLabel" name="label_5">
-                     <property name="text">
-                      <string>eps</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QLineEdit" name="epsZn">
-                     <property name="text">
-                      <string>0.1</string>
-                     </property>
-                    </widget>
-                   </item>
-                  </layout>
-                 </item>
-                 <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_4">
-                   <item>
-                    <widget class="QLabel" name="label_8">
-                     <property name="text">
-                      <string>max Iteration</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QLineEdit" name="indNewton">
-                     <property name="text">
-                      <string>100</string>
-                     </property>
-                    </widget>
-                   </item>
-                  </layout>
-                 </item>
-                </layout>
-               </widget>
-               <widget class="QWidget" name="tab_4">
-                <attribute name="title">
-                 <string>Random Search</string>
-                </attribute>
-                <widget class="QLabel" name="label_9">
-                 <property name="geometry">
-                  <rect>
-                   <x>10</x>
-                   <y>20</y>
-                   <width>141</width>
-                   <height>32</height>
-                  </rect>
-                 </property>
-                 <property name="text">
-                  <string>Stopping criterion:</string>
-                 </property>
-                </widget>
-                <widget class="QWidget" name="">
-                 <property name="geometry">
-                  <rect>
-                   <x>10</x>
-                   <y>60</y>
-                   <width>161</width>
-                   <height>24</height>
-                  </rect>
-                 </property>
-                 <layout class="QHBoxLayout" name="horizontalLayout_7">
-                  <item>
-                   <widget class="QLabel" name="label_14">
-                    <property name="text">
-                     <string>max Iteration</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QLineEdit" name="indRand">
-                    <property name="text">
-                     <string>100</string>
-                    </property>
-                   </widget>
-                  </item>
-                 </layout>
-                </widget>
-                <widget class="QWidget" name="">
-                 <property name="geometry">
-                  <rect>
-                   <x>10</x>
-                   <y>90</y>
-                   <width>166</width>
-                   <height>24</height>
-                  </rect>
-                 </property>
-                 <layout class="QHBoxLayout" name="horizontalLayout_8">
-                  <item>
-                   <widget class="QLabel" name="label_15">
-                    <property name="text">
-                     <string>eps</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QLineEdit" name="epsRand">
-                    <property name="text">
-                     <string>0.1</string>
-                    </property>
-                   </widget>
-                  </item>
-                 </layout>
-                </widget>
-               </widget>
-              </widget>
-             </item>
-            </layout>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <widget class="QPushButton" name="pushButton">
-           <property name="text">
-            <string>start</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-      </layout>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_7">
+            <item>
+             <widget class="QLabel" name="label_14">
+              <property name="text">
+               <string>max Iteration</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="indRand">
+              <property name="text">
+               <string>100</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_8">
+            <item>
+             <widget class="QLabel" name="label_15">
+              <property name="text">
+               <string>eps</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="epsRand">
+              <property name="text">
+               <string>0.1</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>60</y>
+      <width>201</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QLabel" name="label_16">
+       <property name="text">
+        <string>Area:</string>
+       </property>
+      </widget>
      </item>
      <item>
-      <widget class="QLabel" name="rezZn">
-       <property name="text">
-        <string>Результат</string>
-       </property>
+      <widget class="QComboBox" name="areaf">
+       <item>
+        <property name="text">
+         <string>(-15,15)x(-7,13)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>(-10,15)x(-20,20)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>(-4,-4)x(4,4)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>(0,10)x(0,10)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>(-5,-5)x(5,5)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>(-20,10)x(-10,20)</string>
+        </property>
+       </item>
       </widget>
      </item>
     </layout>
