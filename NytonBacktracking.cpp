@@ -181,7 +181,7 @@ int main()
     cout << endl;
 
     cout << "f= " <<f->getf(rez->getRez()) << endl;
-    cout << rez->getSize() << endl;
+ /*   cout << rez->getSize() << endl;
    int n = rez->getSize();
     for (int i = 0; i <n; ++i)
     {
@@ -190,7 +190,7 @@ int main()
             cout << i<< ":" << rez->getVecX(i,j) << " " ;
         }
         cout << endl;
-    }
+    }*/
     
  
     
