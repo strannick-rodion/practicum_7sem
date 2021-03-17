@@ -313,21 +313,23 @@ using namespace std;
         {
             if (f.getf(tempX) > f.getf(vecX.back()))
             {
-                vecX.push_back(tempX);
+                
                 for (int i = 0; i < n; ++i)
                 {
                     tempX[i] = dist[i](generator);
                 }
-                lastOptim = iter;
+                
                 
             }
             else
             {
                 vecX.push_back(tempX);
+                //vecX.push_back(tempX);
                 for (int i = 0; i < n; ++i)
                 {
                     tempX[i] = dist[i](generator);
                 }
+                lastOptim = iter;
             }
             
         }
