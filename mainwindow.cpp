@@ -128,13 +128,13 @@ void MainWindow::on_pushButton_clicked()
 
                          plotX[i]=rez->getVecX(i,0);
                          plotY[i]=rez->getVecX(i,1);
-                         cout<<"out:"<<plotX[i]<<" "<<plotY[i]<<endl;
+
 
 
                  }
 
                  QCPCurve *trajectory = new QCPCurve(ui->plot->xAxis, ui->plot->yAxis);
-                 trajectory->setData(plotX, plotX);
+                 trajectory->setData(plotX, plotY);
                  trajectory->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, QPen(Qt::black, 0), QBrush(Qt::white), 4));
                  trajectory->setPen(QPen(Qt::white, 1));
 

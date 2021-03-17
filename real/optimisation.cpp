@@ -304,8 +304,6 @@ mt19937 generator;
         }
 
 
-
-
               for (iter = 0; Stop(f, stopCrit,maxIter); ++iter)
               {
                   if (f.getf(tempX) > f.getf(vecX.back()))
@@ -320,7 +318,8 @@ mt19937 generator;
 
                   }
                   else
-                  {cout<<"in:"<<tempX[0]<<" "<<tempX[1]<<endl;
+                  {
+                      cout<<"in:"<<tempX[0]<<" "<<tempX[1]<<endl;
                       vecX.push_back(tempX);
                       //vecX.push_back(tempX);
                       for (int i = 0; i < n; ++i)
