@@ -16,10 +16,11 @@ protected:
 public:
     Optimisation(){};
     int getIter();
-    vector<vector<double>> getVecX();
+    double getVecX(int i,int j);
     vector<double> getRez();
-    virtual void calcOptim(vector<double>& x, Function& f, Area areaOpt, int stopCrit, double eps)=0;
-    virtual bool Stop(Function& f,  int topCrit)=0;
+    int getSize();
+    virtual void calcOptim(vector<double>& x, Function& f, Area areaOpt, int stopCrit, double eps,int maxIter)=0;
+    virtual bool Stop(Function& f,  int topCrit,int maxIter)=0;
 };
 
 
@@ -28,8 +29,8 @@ class RandomSearch:public Optimisation
     int lastOptim=0;
 public:
     RandomSearch(): Optimisation(){};
-    void calcOptim(vector<double>& x, Function& f, Area areaOpt, int stopCrit, double eps)override;
-    bool Stop(Function& f,  int topCrit)override;
+    void calcOptim(vector<double>& x, Function& f, Area areaOpt, int stopCrit, double eps,int maxIter)override;
+    bool Stop(Function& f,  int topCrit,int maxIter)override;
 };
 
 
@@ -52,9 +53,9 @@ public:
     void calcHessian(Function& f, vector<double>&x);
     vector<vector<double>> getHessian();
     vector<double> getGradient();
-    bool Stop( Function& f,  int topCrit);
+    bool Stop( Function& f,  int topCrit,int maxIter);
 
-    void calcOptim(vector<double>& x, Function& f, Area areaOpt, int stopCrit, double eps)override;
+    void calcOptim(vector<double>& x, Function& f, Area areaOpt, int stopCrit, double eps,int maxIter)override;
 
     vector<double> getRez();
 };

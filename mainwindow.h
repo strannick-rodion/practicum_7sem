@@ -11,6 +11,8 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
+
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -20,9 +22,9 @@ public:
     int functionNum;
     Optimisation * rez;
     int methodNum;
-    double eps;
-    int areaNum;
-    int stopCrit;
+    double eps, x0, y0,x1,y1;
+    int areaNum, ind;
+    int stopCrit=1;
     vector<double> a = { 0 }, b = { 0 }, x = { 0 };
     Area areaOpt;
     void Plot(QCustomPlot * customPlot);
@@ -31,6 +33,8 @@ public:
 
 private slots:
     void on_pushButton_clicked();
+
+    void on_tabWidget_tabBarClicked(int index);
 
 private:
     Ui::MainWindow *ui;

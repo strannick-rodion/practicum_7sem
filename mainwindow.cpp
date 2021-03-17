@@ -8,6 +8,9 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     Plot(ui->plot);
+    x0 = -10^5;
+    y0 = -10^5;
+    methodNum=1;
 }
 
 MainWindow::~MainWindow()
@@ -19,45 +22,27 @@ MainWindow::~MainWindow()
 void MainWindow::on_pushButton_clicked()
 {
      QString textFunction = ui->functionChoice->currentText();
-     if(textFunction == "f1")
+     if(textFunction == "f(x,y)=(x^2+y-11)^2+(y^2+x-7)^2")
          {
              functionNum = 1;
          }
-         else if(textFunction == "f2")
+         else if(textFunction == "f(x,y)=(y-3)^2+(x + 5)^2-3")
          {
              functionNum = 2;
          }
-     QString textMethod = ui->methodChoice->currentText();
-         if(textMethod == "metod1")
-         {
-             methodNum = 1;
-         }
-         else if(textMethod == "metod2")
-         {
-             methodNum = 2;
-         }
+
 
          QString textArea = ui->areaChoice->currentText();
-         if( textArea== "area1")
+         if( textArea== "(-5,5)x(-5,5)")
          {
              areaNum = 1;
          }
-         else if(textMethod == "area2")
+         else if(textArea == "(-10,15)x(-20,20)")
          {
-             methodNum = 2;
+             areaNum = 2;
          }
 
-         QString textStop = ui->stopChoice->currentText();
-         if( textArea== "stop1")
-         {
-             stopCrit = 1;
-         }
-         else if(textMethod == "stop2")
-         {
-             stopCrit = 2;
-         }
-         x={5,5};
-         eps = ui->epsZn->text().toDouble();
+
 
          switch (functionNum)
          {
@@ -79,8 +64,8 @@ void MainWindow::on_pushButton_clicked()
          {
                 case 1:
                      {
-                        a = { -50, -50 };
-                        b = { 50, 50 };
+                        a = { -5, -5 };
+                        b = { 5, 5 };
                         areaOpt.setArea(a, b);
 
                          break;
@@ -89,46 +74,74 @@ void MainWindow::on_pushButton_clicked()
                 case 2:
                     {
                         a = { -10, -20 };
-                        b = { 10, 20 };
+                        b = { 15, 20 };
                         areaOpt.setArea(a, b);
+                         break;
 
                     }
          }
-
-
+            x1 = ui->xZn->text().toDouble();
+            y1 = ui->yZn->text().toDouble();
+            x={x1,y1};
           switch (methodNum) {
              case 1:
-                     {
+               {
+              QString textStop = ui->stopChoice->currentText();
+              if( textStop== "Gradient")
+              {
+                  stopCrit = 1;
+              }
+              else if(textStop == "Function arguments")
+              {
+                  stopCrit = 2;
+              }
+              else if(textStop == "Function value")
+              {
+                  stopCrit = 3;
+              }
+
+              eps = ui->epsZn->text().toDouble();
+              ind=ui->indNewton->text().toInt();
                           rez = new Newton();
-                          rez->calcOptim(x, *f, areaOpt, stopCrit, eps);
+                          rez->calcOptim(x, *f, areaOpt, stopCrit, eps,ind);
                          break;
                      }
              case 2:
                      {
+                            eps = ui->epsRand->text().toDouble();
+                            ind=ui->indRand->text().toInt();
                           rez = new RandomSearch();
-                          rez->calcOptim(x, *f, areaOpt, stopCrit, eps);
+                          rez->calcOptim(x, *f, areaOpt, stopCrit, eps,ind);
                          break;
                      }
                  }
-          ui->rezZn->setText("Результат: \nNumber of iteration:" +QString::number(rez->getIter())+"\nx="+QString::number(rez->getRez()[0])+", y="+QString::number(rez->getRez()[1]) +"\nf(x,y)=" +QString::number(f->getf(rez->getRez())));
+
           Plot(ui->plot);
                  ui->plot->replot();
+                int n=rez->getSize();
+                cout<<n<<endl;
+                 QVector<double> plotX = QVector<double>(n, 0);
+                 QVector<double> plotY = QVector<double>(n, 0);
 
-                 QVector<double> plotX = QVector<double>(rez->getVecX().size(), 0);
-                 QVector<double> plotY = QVector<double>(rez->getVecX().size(), 0);
-
-                 for (int i=0;i<(rez->getVecX().size()) ;++i )
+                 for (int i=0;i<n ;++i )
                  {
-                     plotX[i]=rez->getVecX()[i][0];
-                     plotY[i]=rez->getVecX()[i][1];
+
+                         plotX[i]=rez->getVecX(i,0);
+                         plotY[i]=rez->getVecX(i,1);
+
+
+
                  }
 
                  QCPCurve *trajectory = new QCPCurve(ui->plot->xAxis, ui->plot->yAxis);
-                 trajectory->setData(plotX, plotX);
-                 trajectory->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, QPen(Qt::black, 0), QBrush(Qt::black), 4));
-                 trajectory->setPen(QPen(Qt::black, 1));
+                 trajectory->setData(plotX, plotY);
+                 trajectory->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, QPen(Qt::black, 0), QBrush(Qt::white), 4));
+                 trajectory->setPen(QPen(Qt::white, 1));
 
                  ui->plot->replot();
+
+                 ui->rezZn->setText("Результат: \nNumber of iteration:" +QString::number(rez->getIter())+"\nx="+QString::number(rez->getRez()[0])+", y="+QString::number(rez->getRez()[1]) +"\nf(x,y)=" +QString::number(f->getf(rez->getRez())));
+
 }
 
 void MainWindow::Plot(QCustomPlot * customPlot){
@@ -138,12 +151,12 @@ void MainWindow::Plot(QCustomPlot * customPlot){
       customPlot->yAxis->setLabel("y");
 
       QCPColorMap *colorMap = new QCPColorMap(customPlot->xAxis, customPlot->yAxis);
-      int numOfx = 100;
-      int numOfy = 100;
+      int numOfx = 200;
+      int numOfy = 200;
 
 
       colorMap->data()->setSize(numOfx, numOfy);
-      colorMap->data()->setRange(QCPRange(areaOpt.getFirst()[0], areaOpt.getSecond()[0]), QCPRange(areaOpt.getFirst()[1], areaOpt.getSecond()[0]));
+      colorMap->data()->setRange(QCPRange(areaOpt.getFirst()[0], areaOpt.getSecond()[0]), QCPRange(areaOpt.getFirst()[1], areaOpt.getSecond()[1]));
       double x, y, z;
 
       for (int x_i = 0; x_i < numOfx; ++x_i)
@@ -153,7 +166,7 @@ void MainWindow::Plot(QCustomPlot * customPlot){
           colorMap->data()->cellToCoord(x_i, y_i, &x, &y);
           switch (functionNum){
                   case 1:
-                    z=(y+8)*(y+8)+(x-10)*(x-10) +20;
+                    z=(x*x+y-11)*(x*x+y-11)+(y*y+x-7)*(y*y+x-7);
 
                     break;
                   case 2:
@@ -170,7 +183,7 @@ void MainWindow::Plot(QCustomPlot * customPlot){
       colorScale->setType(QCPAxis::atRight);
       colorMap->setColorScale(colorScale);
 
-      colorMap->setGradient(QCPColorGradient::gpCandy);
+      colorMap->setGradient(QCPColorGradient::gpThermal);
 
       colorMap->rescaleDataRange();
 
@@ -183,4 +196,18 @@ void MainWindow::Plot(QCustomPlot * customPlot){
       customPlot->rescaleAxes();
       customPlot->replot();
 
+}
+
+
+
+void MainWindow::on_tabWidget_tabBarClicked(int index)
+{
+    if (index == 0)
+        {
+            methodNum = 1;
+        }
+        else
+        {
+            methodNum = 2;
+        }
 }
